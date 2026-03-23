@@ -17,10 +17,11 @@ export type DemoTabParamList = {
 
 // App Stack Navigator types
 export type AppStackParamList = {
-  Welcome: undefined
-  Login: undefined
+
   Demo: NavigatorScreenParams<DemoTabParamList>
   // 🔥 Your screens go here
+  Search: undefined
+  SearchHistory: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -36,4 +37,4 @@ export type DemoTabScreenProps<T extends keyof DemoTabParamList> = CompositeScre
 
 export interface NavigationProps extends Partial<
   ComponentProps<typeof NavigationContainer<AppStackParamList>>
-> {}
+> { }
