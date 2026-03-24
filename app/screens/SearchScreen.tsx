@@ -40,7 +40,9 @@ export const SearchScreen: FC<SearchScreenProps> = () => {
         />
 
         {/* "RADIO" */}
-        <View style={themed($radioContainer)}>
+        <View style={{ justifyContent: "space-around", height: '30%', }}>
+          <Text style={{ fontSize: 18, textAlign: 'center', padding: 3, marginBottom: 8, fontWeight: '600' }} text="Selecione abaixo o que deseja buscar!" />
+
           {/*  Radio Button Pokemon */}
           <Radio
             label="Pokemon"
@@ -57,6 +59,7 @@ export const SearchScreen: FC<SearchScreenProps> = () => {
             containerStyle={themed($radioContainer)}
 
           />
+
         </View>
 
         {/* BOTÃO BUSCAR */}
