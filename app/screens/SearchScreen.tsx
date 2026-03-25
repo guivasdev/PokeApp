@@ -10,15 +10,18 @@ import { useAppTheme } from "@/theme/context"
 import type { ThemedStyle } from "@/theme/types"
 import { colors } from "@/theme/colors"
 import { Radio } from "@/components/Toggle/Radio"
+import { useCasePokemon } from "@/features/pokemon/Controller/useCasePokemon"
+import { Pokemon } from "@/features/pokemon/Entity/Pokemon"
 
 interface SearchScreenProps extends AppStackScreenProps<"Search"> { }
 
 export const SearchScreen: FC<SearchScreenProps> = () => {
   const { themed } = useAppTheme()
+  const { search, setSearch, controller, namePokemon, radioSelect, setRadioSelect } = useCasePokemon()
 
-  const [search, setSearch] = useState("")
-  const [name, setName] = useState("")
-  const [radioSelect, setRadioSelect] = useState<"pokemon" | "item">("pokemon")
+  const callController = () => {
+    controller()
+  }
 
   return (
     <Screen style={themed($root)} contentContainerStyle={themed($root)} preset="scroll">
@@ -29,7 +32,9 @@ export const SearchScreen: FC<SearchScreenProps> = () => {
           preset="heading"
           style={themed($title)}
         />
-
+        <Text>
+          {namePokemon}
+        </Text>
         {/* INPUT */}
         <TextField
           value={search}
@@ -66,9 +71,8 @@ export const SearchScreen: FC<SearchScreenProps> = () => {
         <Button
           text="BUSCAR"
           preset="reversed"
-          onPress={() => {
-            console.log(search,)
-          }}
+          onPress={callController}
+
           style={themed($searchButton)}
         />
 
@@ -118,7 +122,7 @@ const $input: ThemedStyle<TextStyle> = ({ spacing }) => ({
   textAlign: 'center',
 })
 
-const $radioContainer: ThemedStyle<any> = ({ spacing }) => ({
+const $radioContainer: ThemedStyle<any> = () => ({
 
   backgroundColor: colors.palette.neutral500,
   width: '85%',
