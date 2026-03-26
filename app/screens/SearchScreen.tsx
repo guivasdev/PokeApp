@@ -11,13 +11,13 @@ import type { ThemedStyle } from "@/theme/types"
 import { colors } from "@/theme/colors"
 import { Radio } from "@/components/Toggle/Radio"
 import { useCasePokemon } from "@/features/pokemon/Controller/useCasePokemon"
-import { Pokemon } from "@/features/pokemon/Entity/Pokemon"
+import { DetailModelApi } from "@/components/DetailModelApi"
 
 interface SearchScreenProps extends AppStackScreenProps<"Search"> { }
 
 export const SearchScreen: FC<SearchScreenProps> = () => {
   const { themed } = useAppTheme()
-  const { search, setSearch, controller, namePokemon, radioSelect, setRadioSelect } = useCasePokemon()
+  const { search, setSearch, controller, setVisibleDetailModelApi, visibleDetailModelApi, pokemon, errorInfo, radioSelect, setRadioSelect } = useCasePokemon()
 
   const callController = () => {
     controller()
@@ -32,9 +32,6 @@ export const SearchScreen: FC<SearchScreenProps> = () => {
           preset="heading"
           style={themed($title)}
         />
-        <Text>
-          {namePokemon}
-        </Text>
         {/* INPUT */}
         <TextField
           value={search}
@@ -71,6 +68,7 @@ export const SearchScreen: FC<SearchScreenProps> = () => {
         <Button
           text="BUSCAR"
           preset="reversed"
+
           onPress={callController}
 
           style={themed($searchButton)}
@@ -87,8 +85,20 @@ export const SearchScreen: FC<SearchScreenProps> = () => {
             <Icon icon="menu" size={24} />
           </Button>
         </View>
-      </View>
 
+        <View style={{
+          position: 'absolute',
+          alignSelf: 'center',
+
+        }}>
+          {visibleDetailModelApi && errorInfo == "" &&
+            <DetailModelApi
+              data={pokemon} onClose={function (): void {
+                setVisibleDetailModelApi(false)
+              }} />
+          }
+        </View>
+      </View>
     </Screen>
   )
 }
@@ -97,7 +107,7 @@ export const SearchScreen: FC<SearchScreenProps> = () => {
 
 const $root: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flex: 1, backgroundColor: colors.background,
-  padding: spacing.md,
+  padding: spacing.sm,
 })
 const $view: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   height: '80%',
