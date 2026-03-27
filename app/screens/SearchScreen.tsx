@@ -1,4 +1,4 @@
-import { FC, useState } from "react"
+import { FC } from "react"
 import { TextStyle, View, ViewStyle } from "react-native"
 import type { AppStackScreenProps } from "@/navigators/navigationTypes"
 import { Screen } from "@/components/Screen"
@@ -10,17 +10,21 @@ import { useAppTheme } from "@/theme/context"
 import type { ThemedStyle } from "@/theme/types"
 import { colors } from "@/theme/colors"
 import { Radio } from "@/components/Toggle/Radio"
-import { useCasePokemon } from "@/features/pokemon/Controller/useCasePokemon"
 import { DetailModelApi } from "@/components/DetailModelApi"
+import { useSearchApi } from "@/features/search/Controller/useSearchApi"
 
 interface SearchScreenProps extends AppStackScreenProps<"Search"> { }
 
 export const SearchScreen: FC<SearchScreenProps> = () => {
   const { themed } = useAppTheme()
-  const { search, setSearch, controller, setVisibleDetailModelApi, visibleDetailModelApi, pokemon, errorInfo, radioSelect, setRadioSelect } = useCasePokemon()
+  
+  const { search, setSearch, handleSearch,
+    setIsVisibleDetailModelApi, isVisibleDetailModelApi,
+    result, errorInfo, radioSelect, setRadioSelect
+  } = useSearchApi()
 
   const callController = () => {
-    controller()
+    handleSearch()
   }
 
   return (
@@ -36,14 +40,14 @@ export const SearchScreen: FC<SearchScreenProps> = () => {
         <TextField
           value={search}
           onChangeText={setSearch}
-          placeholder="Digite o nome..."
+          placeholder="Digite o nome aqui!"
           autoCapitalize="none"
           style={themed($input)}
         />
 
         {/* "RADIO" */}
-        <View style={{ justifyContent: "space-around", height: '30%', }}>
-          <Text style={{ fontSize: 18, textAlign: 'center', padding: 3, marginBottom: 8, fontWeight: '600' }} text="Selecione abaixo o que deseja buscar!" />
+        <View style={themed($radioGroup)}>
+          <Text style={themed($radioLabel)} text="Selecione abaixo o que deseja buscar!" />
 
           {/*  Radio Button Pokemon */}
           <Radio
@@ -59,7 +63,6 @@ export const SearchScreen: FC<SearchScreenProps> = () => {
             value={radioSelect === "item"}
             onValueChange={() => setRadioSelect("item")}
             containerStyle={themed($radioContainer)}
-
           />
 
         </View>
@@ -68,9 +71,7 @@ export const SearchScreen: FC<SearchScreenProps> = () => {
         <Button
           text="BUSCAR"
           preset="reversed"
-
           onPress={callController}
-
           style={themed($searchButton)}
         />
 
@@ -86,15 +87,12 @@ export const SearchScreen: FC<SearchScreenProps> = () => {
           </Button>
         </View>
 
-        <View style={{
-          position: 'absolute',
-          alignSelf: 'center',
-
-        }}>
-          {visibleDetailModelApi && errorInfo == "" &&
+        <View style={themed($modalContainer)}>
+          {
+          isVisibleDetailModelApi && errorInfo == null &&
             <DetailModelApi
-              data={pokemon} onClose={function (): void {
-                setVisibleDetailModelApi(false)
+              data={result} onClose={function (): void {
+                setIsVisibleDetailModelApi(false)
               }} />
           }
         </View>
@@ -103,14 +101,12 @@ export const SearchScreen: FC<SearchScreenProps> = () => {
   )
 }
 
-// ================== STYLES ==================
-
 const $root: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flex: 1, backgroundColor: colors.background,
   padding: spacing.sm,
 })
 const $view: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  height: '80%',
+  flex:1,
   backgroundColor: colors.palette.neutral300,
   justifyContent: 'space-evenly',
   padding: spacing.md,
@@ -132,8 +128,7 @@ const $input: ThemedStyle<TextStyle> = ({ spacing }) => ({
   textAlign: 'center',
 })
 
-const $radioContainer: ThemedStyle<any> = () => ({
-
+const $radioContainer: ThemedStyle<ViewStyle> = () => ({
   backgroundColor: colors.palette.neutral500,
   width: '85%',
   margin: 'auto',
@@ -141,9 +136,20 @@ const $radioContainer: ThemedStyle<any> = () => ({
   borderRadius: 5
 })
 
+const $radioGroup: ThemedStyle<ViewStyle> = () => ({
+  justifyContent: "space-around",
+  height: "30%",
+})
 
+const $radioLabel: ThemedStyle<TextStyle> = () => ({
+  fontSize: 18,
+  textAlign: "center",
+  padding: 3,
+  marginBottom: 8,
+  fontWeight: "600",
+})
 
-const $searchButton: ThemedStyle<any> = ({ spacing }) => ({
+const $searchButton: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   marginTop: spacing.sm,
 })
 
@@ -153,9 +159,18 @@ const $fabContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   right: spacing.xs,
 })
 
-const $fab: ThemedStyle<any> = ({ colors }) => ({
+const $fab: ThemedStyle<ViewStyle> = ({ colors }) => ({
   borderRadius: 100,
   padding: 3,
   backgroundColor: colors.palette.neutral500,
+})
 
+const $modalContainer: ThemedStyle<ViewStyle> = () => ({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  justifyContent: "center",
+  alignItems: "center",
 })

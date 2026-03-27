@@ -3,7 +3,11 @@ export interface Pokemon {
   name: string
   image: string
 }
-
+export interface Item {
+  id: string
+  name: string
+  image: string
+}
 
 export interface ApiConfig {
   url: string

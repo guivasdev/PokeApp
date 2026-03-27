@@ -1,14 +1,14 @@
 //app/features/pokemon/UseCase/UseCasePokemonInterface.ts
 
-import { GeneralApiProblem } from "../Adapter/apiProblem";
-import { IRepositoryPokemonInterface } from "../Adapter/IRepositoryPokemonInterface";
+/*import { GeneralApiProblem } from "../Adapter/apiProblem";
+import { IApiRepositoryInterface } from "../Adapter/IApiRepositoryInterface";
 import { Pokemon } from "../Adapter/types";
 import { IUseCasePokemonInterface } from "./IUseCasePokemonInterface";
 
 export class Service implements IUseCasePokemonInterface {
-    private repository : IRepositoryPokemonInterface;
+    private repository : IApiRepositoryInterface;
 
-    constructor(repository: IRepositoryPokemonInterface) {
+    constructor(repository: IApiRepositoryInterface) {
         this.repository = repository
 
     }
@@ -22,3 +22,4 @@ export class Service implements IUseCasePokemonInterface {
 
 
 }
+    */

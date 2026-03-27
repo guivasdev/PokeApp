@@ -1,4 +1,4 @@
-//app/features/pokemon/Entity/Pokemon.ts
+//app/features/search/Entity/Pokemon.ts
 export class Pokemon {
     public id: string;
     public name: string;

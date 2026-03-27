@@ -2,20 +2,18 @@ import { StyleProp, TextStyle, View, ViewStyle, Image, TouchableOpacity, ImageSt
 import { useAppTheme } from "@/theme/context"
 import type { ThemedStyle } from "@/theme/types"
 import { Text } from "@/components/Text"
-import { Pokemon } from "@/features/pokemon/Adapter/types"
+import { Item, Pokemon } from "@/features/search/Adapter/types"
 import { colors } from "@/theme/colors"
 
 export interface PokemonDetailModelProps {
-  data: Pokemon
-
+  data: Pokemon | Item
   onClose: () => void
   style?: StyleProp<ViewStyle>
 }
 
 export const DetailModelApi = (props: PokemonDetailModelProps) => {
-  const { style, data, onClose } = props
+  const { data, onClose } = props
   const { themed } = useAppTheme()
-
 
   return (
     <View style={themed($container)}>
